@@ -12,8 +12,8 @@ public class ML_TP1 {
 	
 	Random rand = new Random();
 	
-	int nbElem = rand.nextInt(250) + 50;
-	int nbClust = rand.nextInt(3) + 3;
+	int nbElem = 500;
+	int nbClust = 7;
 
 	for(int i=0;i<nbElem;i++){
 	    Data newData = new Data(rand.nextFloat(), rand.nextFloat());
@@ -45,7 +45,7 @@ public class ML_TP1 {
 	writer.println();
 	
 	for(int i=0;i<input.size();i++){
-	    writer.print(input.get(i).getCluster() + " ");
+	    writer.print(input.get(i).getCluster()+1 + " ");
 	}
 	
 	writer.close();
