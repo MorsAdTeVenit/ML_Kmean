@@ -2,10 +2,12 @@ import java.util.ArrayList;
 
 public class Output {    
     private ArrayList<Data> barycenters;
+    public float distSum;
     
     public Output(ArrayList<Data> input, int nbcluster, float[][] metric, ArrayList<Data> centers){
 	this.barycenters = centers;
-	
+	this.distSum = 0;
+        
 	ArrayList<Cluster> clust = new ArrayList<>();
 	ArrayList<Data> dataToRM = new ArrayList<>();
 	
@@ -24,6 +26,7 @@ public class Output {
 	this.resetBarycenters(clust);
 	
 	do {	    
+            distSum = 0;
 	    modif = false;
 	    for(int i=0;i<clust.size();i++){
 		for (Data data : clust.get(i).getData()) {
@@ -43,21 +46,26 @@ public class Output {
 	
 	    this.resetBarycenters(clust);
 	    
-	} while (modif);	
+	} while (modif);
+        
+        
     }
     
     private int calcClosestCenter(Data d, float[][] metric) {
 	int closestCenter=0;
 	float shortDist = (((d.getX() - barycenters.get(0).getX())*metric[0][0])*((d.getX() - barycenters.get(0).getX())*metric[0][0]))+(((d.getY() - barycenters.get(0).getY())*metric[1][1])*((d.getY() - barycenters.get(0).getY())*metric[1][1]));
 	float dist;
-	
+	distSum+=shortDist;
 	for(int i=1;i<this.barycenters.size();i++){
 	    dist = (((d.getX() - barycenters.get(i).getX())*metric[0][0])*((d.getX() - barycenters.get(i).getX())*metric[0][0]))+(((d.getY() - barycenters.get(i).getY())*metric[1][1])*((d.getY() - barycenters.get(i).getY())*metric[1][1]));
 	
 	    if(dist<shortDist){
+                distSum-=shortDist;
+                distSum+=dist;
 		shortDist = dist;
 		closestCenter = i;
 	    }
+            
 	}
 	
 	return closestCenter;
